@@ -1,12 +1,16 @@
 import chalk from 'chalk';
+import dotenv from 'dotenv';
 import fs from 'fs';
 import inquirer from 'inquirer';
 import OpenAI from "openai";
 
+dotenv.config();
+
+
 // Initialize OpenRouter API
 const openai = new OpenAI({
   baseURL: "https://openrouter.ai/api/v1",
-  apiKey: "ccc",
+  apiKey: process.env.OPENAI_API_KEY!,
 });
 
 // Function to gather requirements
@@ -25,7 +29,7 @@ async function gatherRequirements(): Promise<string> {
 async function generateTasks(requirement: string) {
   console.log(chalk.blue('Generating tasks...'));
   const response = await openai.chat.completions.create({
-    model: 'gpt-4',
+    model: process.env.MODEL!,
     messages: [
       {
         role: 'system',
